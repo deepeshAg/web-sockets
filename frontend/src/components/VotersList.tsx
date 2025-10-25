@@ -21,7 +21,7 @@ export function VotersList({ pollId, currentUsername, pollCreator, onLikeUser }:
   const [likedUsers, setLikedUsers] = useState<Set<string>>(new Set());
 
       // WebSocket connection for real-time updates
-      useWebSocket('ws://localhost:8000/ws', {
+      useWebSocket('ws://localhost:8001/ws', {
         onMessage: (message) => {
           if (message.type === 'like_toggle_update' && message.poll_id === pollId) {
             console.log('Received like toggle update for poll:', pollId, message.data);

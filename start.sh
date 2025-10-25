@@ -50,8 +50,8 @@ echo "📥 Installing backend dependencies..."
 pip install -r requirements.txt
 
 # Start backend in background
-echo "🚀 Starting FastAPI server on http://localhost:8000"
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 &
+echo "🚀 Starting FastAPI server on http://localhost:8001"
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8001 &
 BACKEND_PID=$!
 
 # Wait a moment for backend to start
@@ -75,9 +75,9 @@ echo ""
 echo "🎉 Application started successfully!"
 echo ""
 echo "📱 Frontend: http://localhost:3000"
-echo "🔧 Backend API: http://localhost:8000"
-echo "📚 API Docs: http://localhost:8000/docs"
-echo "🔌 WebSocket: ws://localhost:8000/ws"
+echo "🔧 Backend API: http://localhost:8001"
+echo "📚 API Docs: http://localhost:8001/docs"
+echo "🔌 WebSocket: ws://localhost:8001/ws"
 echo ""
 echo "Press Ctrl+C to stop both servers"
 

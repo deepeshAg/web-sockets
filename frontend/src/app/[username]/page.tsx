@@ -24,7 +24,7 @@ export default function UserPage() {
   const [error, setError] = useState<string | null>(null);
 
   // WebSocket connection
-  const { isConnected } = useWebSocket('ws://localhost:8000/ws', {
+  const { isConnected } = useWebSocket('ws://localhost:8001/ws', {
     onMessage: (message) => {
       console.log('WebSocket message received:', message);
       
