@@ -62,6 +62,10 @@ echo ""
 echo "🎨 Starting Next.js frontend..."
 cd ../frontend
 
+# Set environment variables for frontend
+export NEXT_PUBLIC_API_URL=http://localhost:8001
+export NEXT_PUBLIC_WS_URL=ws://localhost:8001
+
 # Install dependencies
 echo "📥 Installing frontend dependencies..."
 npm install
