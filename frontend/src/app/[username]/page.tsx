@@ -7,7 +7,7 @@ import { PollCard } from '@/components/PollCard';
 import { PollForm } from '@/components/PollForm';
 import { UsernameModal } from '@/components/UsernameModal';
 import { UserProfile } from '@/components/UserProfile';
-import { apiClient, Poll, CreatePollRequest } from '@/lib/api';
+import { apiClient, Poll, CreatePollRequest, WS_BASE_URL } from '@/lib/api';
 import { useWebSocket } from '@/lib/websocket';
 import { Plus, Wifi, WifiOff, User, ArrowLeft } from 'lucide-react';
 
@@ -24,7 +24,7 @@ export default function UserPage() {
   const [error, setError] = useState<string | null>(null);
 
   // WebSocket connection
-  const { isConnected } = useWebSocket('ws://localhost:8001/ws', {
+  const { isConnected } = useWebSocket(`${WS_BASE_URL}/ws`, {
     onMessage: (message) => {
       console.log('WebSocket message received:', message);
       

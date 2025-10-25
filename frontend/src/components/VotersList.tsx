@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Heart, User, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { apiClient, PollVotersResponse, VoterInfo } from '@/lib/api';
+import { apiClient, PollVotersResponse, VoterInfo, WS_BASE_URL } from '@/lib/api';
 import { useWebSocket } from '@/lib/websocket';
 
 interface VotersListProps {
@@ -21,7 +21,7 @@ export function VotersList({ pollId, currentUsername, pollCreator, onLikeUser }:
   const [likedUsers, setLikedUsers] = useState<Set<string>>(new Set());
 
       // WebSocket connection for real-time updates
-      useWebSocket('ws://localhost:8001/ws', {
+      useWebSocket(`${WS_BASE_URL}/ws`, {
         onMessage: (message) => {
           if (message.type === 'like_toggle_update' && message.poll_id === pollId) {
             console.log('Received like toggle update for poll:', pollId, message.data);
