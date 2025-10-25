@@ -80,18 +80,20 @@ export function PollCard({ poll, onVote, onLikeUser, onDelete, onResetVotes, cur
   const totalVotes = getTotalVotes(poll.votes);
 
   return (
-    <Card className="w-full max-w-2xl mx-auto bg-white border-l-4 border-l-green-500 shadow-sm hover:shadow-md transition-shadow">
-      <CardHeader>
+    <Card className="w-full bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+      <CardHeader className="pb-4">
         <div className="flex justify-between items-start">
           <div className="flex-1">
-            <CardTitle className="text-xl">{poll.title}</CardTitle>
+            <CardTitle className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">{poll.title}</CardTitle>
             {poll.description && (
-              <CardDescription className="text-base">{poll.description}</CardDescription>
+              <CardDescription className="text-gray-600 text-sm sm:text-base leading-relaxed">{poll.description}</CardDescription>
             )}
             {poll.creator_username && (
-              <div className="flex items-center mt-2 text-sm text-muted-foreground">
-                <User className="h-3 w-3 mr-1" />
-                <span>Created by <span className="font-medium text-primary">{poll.creator_username}</span></span>
+              <div className="flex items-center mt-3 text-sm text-gray-500">
+                <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mr-2">
+                  <User className="h-3 w-3 text-white" />
+                </div>
+                <span>Created by <span className="font-semibold text-gray-700">{poll.creator_username}</span></span>
               </div>
             )}
           </div>
@@ -101,10 +103,10 @@ export function PollCard({ poll, onVote, onLikeUser, onDelete, onResetVotes, cur
             variant="ghost"
             size="sm"
             onClick={() => setShowVoters(!showVoters)}
-            className="text-blue-500 hover:text-blue-700 hover:bg-blue-50"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             title="View voters"
         >
-            <Eye className="h-4 w-4" />
+            <Eye className="h-4 w-4 text-gray-600" />
         </Button>
         
         {/* Admin buttons - only for poll creator */}
@@ -116,20 +118,20 @@ export function PollCard({ poll, onVote, onLikeUser, onDelete, onResetVotes, cur
                         size="sm"
                         onClick={handleResetVotes}
                         disabled={isResetting}
-                        className="text-blue-500 hover:text-blue-700 hover:bg-blue-50"
-                        title="Reset votes (for testing)"
+                        className="p-2 hover:bg-orange-50 rounded-lg transition-colors"
+                        title="Reset votes"
                     >
-                        <RotateCcw className="h-4 w-4" />
+                        <RotateCcw className="h-4 w-4 text-orange-600" />
                     </Button>
                 )}
                 <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowDeleteDialog(true)}
-                    className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                    className="p-2 hover:bg-red-50 rounded-lg transition-colors"
                     title="Delete poll"
                 >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-4 w-4 text-red-600" />
                 </Button>
             </>
         )}
@@ -137,8 +139,8 @@ export function PollCard({ poll, onVote, onLikeUser, onDelete, onResetVotes, cur
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Vote Options - WhatsApp Style */}
-        <div className="space-y-2">
+        {/* Vote Options - Stunning Style */}
+        <div className="space-y-3">
           {[
             { key: 'option1', label: poll.option1, votes: poll.votes.option1 },
             { key: 'option2', label: poll.option2, votes: poll.votes.option2 },
@@ -147,21 +149,19 @@ export function PollCard({ poll, onVote, onLikeUser, onDelete, onResetVotes, cur
           ].map((option, index) => {
             const percentage = getVotePercentage(option.votes, totalVotes);
             return (
-              <div key={option.key} className="relative">
-                <VoteButton
-                  option={index + 1}
-                  onVote={() => handleVote(index + 1)}
-                  disabled={isVoting}
-                  className="w-full justify-between p-3 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200"
-                />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
-                  {option.votes} ({percentage}%)
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-1 mt-1">
-                  <div
-                    className="bg-green-500 h-1 rounded-full transition-all duration-300"
-                    style={{ width: `${percentage}%` }}
+              <div key={option.key} className="group">
+                <div className="relative overflow-hidden rounded-xl bg-gray-50 hover:bg-gray-100 transition-all duration-300 border border-gray-200/50">
+                  <VoteButton
+                    option={index + 1}
+                    onVote={() => handleVote(index + 1)}
+                    disabled={isVoting}
+                    className="w-full justify-start p-4 text-left hover:bg-transparent text-sm sm:text-base"
                   />
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm font-semibold text-gray-600">
+                    {option.votes} ({percentage}%)
+                  </div>
+                  <div className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-500 ease-out"
+                       style={{ width: `${percentage}%` }} />
                 </div>
               </div>
             );
@@ -169,14 +169,14 @@ export function PollCard({ poll, onVote, onLikeUser, onDelete, onResetVotes, cur
         </div>
 
         {/* Stats */}
-        <div className="flex items-center justify-between pt-4 border-t">
-          <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-            <div className="flex items-center space-x-1">
-              <Users className="h-4 w-4" />
-              <span>{totalVotes} votes</span>
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+          <div className="flex items-center space-x-6 text-sm text-gray-500">
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <span className="font-medium">{totalVotes} votes</span>
             </div>
-            <div className="flex items-center space-x-1">
-              <BarChart3 className="h-4 w-4" />
+            <div className="flex items-center space-x-2">
+              <BarChart3 className="h-4 w-4 text-gray-400" />
               <span>Live results</span>
             </div>
           </div>

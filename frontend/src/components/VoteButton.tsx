@@ -29,11 +29,11 @@ export function VoteButton({ option, onVote, disabled, isSelected, className }: 
       disabled={disabled || isVoting}
       variant="ghost"
       size="sm"
-      className={`transition-all duration-200 text-left ${
+      className={`transition-all duration-200 text-left font-medium text-gray-800 hover:text-gray-900 ${
         className || ""
       }`}
     >
-      {isVoting ? 'Voting...' : `Option ${option}`}
+      {isVoting ? 'Voting...' : option.label}
     </Button>
   );
 }

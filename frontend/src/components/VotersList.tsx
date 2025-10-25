@@ -20,25 +20,29 @@ export function VotersList({ pollId, currentUsername, pollCreator, onLikeUser }:
   const [likingUsers, setLikingUsers] = useState<Set<string>>(new Set());
   const [likedUsers, setLikedUsers] = useState<Set<string>>(new Set());
 
-  // WebSocket connection for real-time like updates
-  useWebSocket('ws://localhost:8000/ws', {
-    onMessage: (message) => {
-      if (message.type === 'like_toggle_update' && message.poll_id === pollId) {
-        console.log('Received like toggle update for poll:', pollId, message.data);
-        const { liked_username, is_liked } = message.data;
-        
-        setLikedUsers(prev => {
-          const newSet = new Set(prev);
-          if (is_liked) {
-            newSet.add(liked_username);
-          } else {
-            newSet.delete(liked_username);
+      // WebSocket connection for real-time updates
+      useWebSocket('ws://localhost:8000/ws', {
+        onMessage: (message) => {
+          if (message.type === 'like_toggle_update' && message.poll_id === pollId) {
+            console.log('Received like toggle update for poll:', pollId, message.data);
+            const { liked_username, is_liked } = message.data;
+            
+            setLikedUsers(prev => {
+              const newSet = new Set(prev);
+              if (is_liked) {
+                newSet.add(liked_username);
+              } else {
+                newSet.delete(liked_username);
+              }
+              return newSet;
+            });
+          } else if (message.type === 'vote_update' && message.poll_id === pollId) {
+            console.log('Received vote update for poll:', pollId, 'refreshing voters list');
+            // Refresh voters list when votes change
+            fetchVoters();
           }
-          return newSet;
-        });
-      }
-    }
-  });
+        }
+      });
 
   useEffect(() => {
     fetchVoters();
@@ -120,17 +124,21 @@ export function VotersList({ pollId, currentUsername, pollCreator, onLikeUser }:
     return (
       <div className="space-y-2">
         {voters.map((voter, index) => (
-          <div key={index} className="flex items-center justify-between p-2 bg-muted/50 rounded">
-            <div className="flex items-center space-x-2">
-              <User className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium">{voter.username || 'Anonymous'}</span>
-              {voter.username && likedUsers.has(voter.username) && (
-                <Heart className="h-3 w-3 text-red-500" />
-              )}
-              <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                <Clock className="h-3 w-3" />
-                <span>{formatDate(voter.voted_at)}</span>
+          <div key={index} className="flex items-center justify-between p-3 bg-gray-50/80 rounded-xl border border-gray-200/50 hover:bg-gray-100/80 transition-all duration-200">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <User className="h-4 w-4 text-white" />
               </div>
+              <div>
+                <span className="font-semibold text-gray-900">{voter.username || 'Anonymous'}</span>
+                <div className="flex items-center space-x-1 text-xs text-gray-500">
+                  <Clock className="h-3 w-3" />
+                  <span>{formatDate(voter.voted_at)}</span>
+                </div>
+              </div>
+              {voter.username && likedUsers.has(voter.username) && (
+                <Heart className="h-4 w-4 text-red-500" />
+              )}
             </div>
             {currentUsername && 
              pollCreator === currentUsername && 
@@ -141,17 +149,13 @@ export function VotersList({ pollId, currentUsername, pollCreator, onLikeUser }:
                 disabled={likingUsers.has(voter.username!)}
                 variant={likedUsers.has(voter.username!) ? "default" : "outline"}
                 size="sm"
-                className="flex items-center space-x-1"
+                className={`w-10 h-10 rounded-full transition-all duration-200 flex items-center justify-center ${
+                  likedUsers.has(voter.username!) 
+                    ? 'bg-red-500 hover:bg-red-600 text-white' 
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                }`}
               >
-                <Heart className={`h-3 w-3 ${likedUsers.has(voter.username!) ? 'text-white' : ''}`} />
-                <span>
-                  {likingUsers.has(voter.username!) 
-                    ? 'Updating...' 
-                    : likedUsers.has(voter.username!) 
-                      ? 'Unlike' 
-                      : 'Like'
-                  }
-                </span>
+                <Heart className={`h-4 w-4 ${likedUsers.has(voter.username!) ? 'text-white' : ''}`} />
               </Button>
             )}
           </div>
@@ -192,13 +196,13 @@ export function VotersList({ pollId, currentUsername, pollCreator, onLikeUser }:
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">Voters</CardTitle>
-        <p className="text-sm text-muted-foreground">
+    <Card className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-xl shadow-lg overflow-hidden">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg font-semibold text-gray-800">Voters</CardTitle>
+        <p className="text-sm text-gray-600">
           {pollCreator === currentUsername 
-            ? "Click 'Like' to show appreciation to voters. Click again to unlike." 
-            : "See who voted and who the creator has liked"}
+            ? "Tap ❤️ to appreciate voters" 
+            : "See who voted and who the creator appreciated"}
         </p>
       </CardHeader>
       <CardContent className="space-y-4">

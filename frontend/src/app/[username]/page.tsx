@@ -171,59 +171,59 @@ export default function UserPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="max-w-lg mx-auto px-4 py-4 sm:max-w-2xl lg:max-w-4xl">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <div className="flex items-center space-x-4 mb-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+          <div className="flex-1">
+            <div className="flex items-center space-x-3 mb-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => router.push('/')}
-                className="flex items-center space-x-1"
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <ArrowLeft className="h-4 w-4" />
-                <span>Back</span>
               </Button>
-              <h1 className="text-3xl font-bold text-foreground">Real-time Polls</h1>
+              <h1 className="text-xl sm:text-2xl font-semibold text-gray-800">Polls</h1>
             </div>
-            <p className="text-muted-foreground">Vote on polls and see results update in real-time</p>
             {username && (
-              <div className="flex items-center mt-2 text-sm text-muted-foreground">
-                <User className="h-4 w-4 mr-1" />
-                <span>Logged in as <span className="font-medium text-primary">{username}</span></span>
+              <div className="text-sm text-gray-500 ml-11">
+                Welcome back, <span className="font-medium text-gray-700">{username}</span>
               </div>
             )}
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             {/* Profile Button */}
             <Button
-              variant="outline"
+              variant="ghost"
               onClick={() => setShowUserProfile(!showUserProfile)}
-              className="flex items-center space-x-2"
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <User className="h-4 w-4" />
-              <span>Profile</span>
+              <span className="hidden sm:inline ml-2 text-sm">Profile</span>
             </Button>
             
             {/* Connection Status */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-white/80 backdrop-blur-sm border border-gray-200 shadow-sm">
               {isConnected ? (
                 <>
-                  <Wifi className="h-4 w-4 text-primary" />
-                  <span className="text-sm text-primary">Live</span>
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-xs text-green-600 font-medium">Live</span>
                 </>
               ) : (
                 <>
-                  <WifiOff className="h-4 w-4 text-destructive" />
-                  <span className="text-sm text-destructive">Offline</span>
+                  <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                  <span className="text-xs text-red-600 font-medium">Offline</span>
                 </>
               )}
             </div>
-            <Button onClick={() => setShowCreateForm(!showCreateForm)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Create Poll
+            <Button 
+              onClick={() => setShowCreateForm(!showCreateForm)}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline ml-2">Create</span>
             </Button>
           </div>
         </div>
@@ -257,17 +257,17 @@ export default function UserPage() {
 
         {/* Polls List */}
         {polls.length === 0 ? (
-          <div className="text-center py-12">
+          <div className="text-center py-16">
             <div className="text-6xl mb-4">📊</div>
-            <h3 className="text-xl font-semibold text-foreground mb-2">No polls yet</h3>
-            <p className="text-muted-foreground mb-6">Be the first to create a poll!</p>
-            <Button onClick={() => setShowCreateForm(true)}>
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">No polls yet</h3>
+            <p className="text-gray-500 mb-6">Be the first to create a poll!</p>
+            <Button onClick={() => setShowCreateForm(true)} className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
               <Plus className="h-4 w-4 mr-2" />
-              Create First Poll
+              Create Poll
             </Button>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="grid gap-4 sm:gap-6">
             {polls.map((poll) => (
               <PollCard
                 key={poll.id}

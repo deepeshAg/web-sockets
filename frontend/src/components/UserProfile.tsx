@@ -76,40 +76,42 @@ export function UserProfile({ username }: UserProfileProps) {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
-          <User className="h-5 w-5" />
-          <span>{profile.username}</span>
+    <Card className="w-full bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-xl shadow-lg overflow-hidden">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+            <User className="h-5 w-5 text-white" />
+          </div>
+          <span className="text-xl font-semibold text-gray-900">{profile.username}</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="text-center p-3 bg-muted/30 rounded-lg">
-            <div className="flex items-center justify-center space-x-1 mb-1">
-              <Heart className="h-4 w-4 text-red-500" />
-              <span className="text-sm font-medium">Likes Received</span>
+          <div className="text-center p-4 bg-gradient-to-br from-red-50 to-pink-50 rounded-xl border border-red-100">
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <Heart className="h-5 w-5 text-red-500" />
+              <span className="text-sm font-semibold text-red-700">Likes Received</span>
             </div>
-            <div className="text-2xl font-bold text-primary">{profile.likes_received}</div>
+            <div className="text-3xl font-bold text-red-600">{profile.likes_received}</div>
           </div>
           
-          <div className="text-center p-3 bg-muted/30 rounded-lg">
-            <div className="flex items-center justify-center space-x-1 mb-1">
-              <MessageSquare className="h-4 w-4 text-blue-500" />
-              <span className="text-sm font-medium">Polls Created</span>
+          <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <MessageSquare className="h-5 w-5 text-blue-500" />
+              <span className="text-sm font-semibold text-blue-700">Polls Created</span>
             </div>
-            <div className="text-2xl font-bold text-primary">{profile.polls_created}</div>
+            <div className="text-3xl font-bold text-blue-600">{profile.polls_created}</div>
           </div>
         </div>
 
         {/* Total Votes */}
-        <div className="text-center p-3 bg-muted/30 rounded-lg">
-          <div className="flex items-center justify-center space-x-1 mb-1">
-            <BarChart3 className="h-4 w-4 text-green-500" />
-            <span className="text-sm font-medium">Total Votes</span>
+        <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100">
+          <div className="flex items-center justify-center space-x-2 mb-2">
+            <BarChart3 className="h-5 w-5 text-green-500" />
+            <span className="text-sm font-semibold text-green-700">Total Votes</span>
           </div>
-          <div className="text-2xl font-bold text-primary">{profile.total_votes}</div>
+          <div className="text-3xl font-bold text-green-600">{profile.total_votes}</div>
         </div>
 
         {/* Status Badge */}
