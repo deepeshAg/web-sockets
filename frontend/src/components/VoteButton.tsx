@@ -9,9 +9,10 @@ interface VoteButtonProps {
   disabled?: boolean;
   isSelected?: boolean;
   className?: string;
+  label: string; // Add label prop
 }
 
-export function VoteButton({ option, onVote, disabled, isSelected, className }: VoteButtonProps) {
+export function VoteButton({ option, onVote, disabled, isSelected, className, label }: VoteButtonProps) {
   const [isVoting, setIsVoting] = useState(false);
 
   const handleVote = async () => {
@@ -33,7 +34,7 @@ export function VoteButton({ option, onVote, disabled, isSelected, className }: 
         className || ""
       }`}
     >
-      {isVoting ? 'Voting...' : option.label}
+      {isVoting ? 'Voting...' : label}
     </Button>
   );
 }

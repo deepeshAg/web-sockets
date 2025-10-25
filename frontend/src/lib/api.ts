@@ -48,7 +48,7 @@ export interface LikeResponse {
 }
 
 export interface WebSocketMessage {
-  type: 'vote_update' | 'like_update' | 'poll_created' | 'poll_deleted';
+  type: 'vote_update' | 'like_update' | 'poll_created' | 'poll_deleted' | 'user_like_update' | 'like_toggle_update';
   poll_id: number;
   data: any;
 }

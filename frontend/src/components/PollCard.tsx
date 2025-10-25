@@ -156,6 +156,7 @@ export function PollCard({ poll, onVote, onLikeUser, onDelete, onResetVotes, cur
                     onVote={() => handleVote(index + 1)}
                     disabled={isVoting}
                     className="w-full justify-start p-4 text-left hover:bg-transparent text-sm sm:text-base"
+                    label={option.label}
                   />
                   <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm font-semibold text-gray-600">
                     {option.votes} ({percentage}%)
